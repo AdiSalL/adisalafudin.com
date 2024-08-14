@@ -39,7 +39,7 @@ const Hero = () => {
             />
           </ReactTyped>
         </p>
-        <button className="btn border border-neutral-content btn-square btn-ghost rounded lg:btn-wide px-8">
+        <button className="btn border border-neutral-content w-full btn-square btn-ghost rounded lg:btn-wide px-8">
           Contact Me
         </button>
       </div>
