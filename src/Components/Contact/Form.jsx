@@ -1,76 +1,54 @@
-import React, { useState } from "react";
-import emailjs from "emailjs-com";
+import React, { useRef, useState } from "react";
+
 function ContactForm() {
-  const [formData, setFormData] = useState({
-    email: "",
-    subject: "",
-    message: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
+  const formRef = useRef(null);
+  function handleSubmit(e) {
     e.preventDefault();
-
-    emailjs
-      .sendForm(
-        "service_t744oyd", // Replace with your EmailJS service ID
-        "template_vav2ydy", // Replace with your EmailJS template ID
-        e.target,
-        "Z09IQXlaOf50G7R5W" // Replace with your EmailJS user ID
-      )
-      .then(
-        (result) => {
-          console.log(result.text);
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
-  };
+    fetch(
+      "https://script.google.com/macros/s/AKfycbydyYbn1BASqsWvOU0sK9YSVfWIkLfBMMUxVps97lvXbGMNtneUanYGTbCQ34H5cNXgxQ/exec",
+      {
+        method: "POST",
+        body: new FormData(formRef.current),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        alert(data.msg);
+      })
+      .catch((e) => console.log(e));
+  }
 
   return (
     <div className="mt-2 w-screen h-screen flex flex-col justify-center items-center">
       <div>
         <h1>Contact Me:</h1>
       </div>
-      <form onSubmit={handleSubmit} className="w-1/2 mx-auto">
+      <form ref={formRef} onSubmit={handleSubmit} className="w-1/2 mx-auto">
         <div className="">
           <label className="input flex items-center">Email:</label>
           <input
             className="input input-bordered w-full max-w-screen"
             type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
+            name="Email"
             required
             placeholder="email@email.com"
           />
         </div>
         <div>
-          <label className="input flex items-center">Subject:</label>
+          <label className="input flex items-center">Name:</label>
           <input
             type="text"
-            name="subject"
-            value={formData.subject}
-            onChange={handleChange}
+            name="Name"
             required
             className="input input-bordered w-full max-w-screen"
-            placeholder="Hiring For Project ...."
+            placeholder="John Doe"
           />
         </div>
         <div>
           <label className="input flex items-center">Message:</label>
           <textarea
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
+            name="Message"
             required
             className="textarea textarea-bordered w-full"
             placeholder="The Project Is To Make SAAS....."
